@@ -1,0 +1,47 @@
+version: '3.8'
+
+volumes:
+  namenode:
+  datanode:
+  postgres-data:
+
+networks:
+  webnet:
+    driver: overlay
+
+services:
+  frontend:
+    image: berial97/cca4_frontend_react:1.0
+    ports:
+      - "80:80"
+    networks:
+      - webnet
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+
+  backend:
+    image: berial97/cca4_backend_django:1.0
+    ports:
+      - "8000:8000"
+    depends_on:
+      - namenode
+      - resourcemanager
+      - spark-master
+    networks:
+      - webnet
+    volumes:
+      - ./data:/app/data
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure

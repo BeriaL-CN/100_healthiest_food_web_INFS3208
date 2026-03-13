@@ -1,0 +1,40 @@
+# Node.js
+my-app/node_modules/
+my-app/build/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+*.egg-info/
+dist/
+build/
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+
+# Docker
+*.dockerignore
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env.local
+.env.*.local
+
+# Package lock (use package-lock.json from my-app)
+package-lock.json

@@ -1,0 +1,167 @@
+version: '3.8'
+
+volumes:
+  namenode:
+  datanode:
+
+networks:
+  webnet:
+    driver: overlay
+
+services:
+  frontend:
+    image: berial97/cca4_frontend_react:1.0
+    ports:
+      - "80:80"
+    networks:
+      - webnet
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 2
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+
+  backend:
+    image: berial97/cca4_backend_django:1.0
+    ports:
+      - "8000:8000"
+    depends_on:
+      - namenode
+      - resourcemanager
+      - spark-master
+    networks:
+      - webnet
+    volumes:
+      - ./data:/app/data:ro
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+
+  namenode:
+    image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
+    environment:
+      - CLUSTER_NAME=hadoop_cluster
+    volumes:
+      - namenode:/hadoop/dfs/name
+      - ./data:/data
+    ports:
+      - "9870:9870"  # Namenode Web UI
+      - "9000:9000"  # Namenode RPC port
+    networks:
+      - webnet
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+
+  datanode:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    environment:
+      - CLUSTER_NAME=hadoop_cluster
+      - CORE_CONF_fs_defaultFS=hdfs://namenode:9000
+    volumes:
+      - datanode:/hadoop/dfs/data
+    networks:
+      - webnet
+    deploy:
+      replicas: 3  # 3 Datanodes for redundancy
+      placement:
+        constraints:
+          - node.role == worker
+
+  resourcemanager:
+    image: bde2020/hadoop-resourcemanager:2.0.0-hadoop3.2.1-java8
+    environment:
+      - CORE_CONF_fs_defaultFS=hdfs://namenode:9000
+      - YARN_CONF_yarn_resourcemanager_hostname=resourcemanager
+    ports:
+      - "8088:8088"  # ResourceManager Web UI
+    networks:
+      - webnet
+    deploy:
+      replicas: 1
+
+  nodemanager:
+    image: bde2020/hadoop-nodemanager:2.0.0-hadoop3.2.1-java8
+    environment:
+      - CORE_CONF_fs_defaultFS=hdfs://namenode:9000
+      - YARN_CONF_yarn_resourcemanager_hostname=resourcemanager
+    networks:
+      - webnet
+    deploy:
+      replicas: 2  # 2 NodeManagers to run YARN jobs
+      placement:
+        constraints:
+          - node.role == worker
+
+  spark-master:
+    image: bde2020/spark-master:3.0.0-hadoop3.2
+    environment:
+      - SPARK_MODE=master
+      - SPARK_MASTER_WEBUI_PORT=8080
+      - SPARK_MASTER_PORT=7077
+    ports:
+      - "8080:8080"  # Spark Master Web UI
+      - "7077:7077"  
+    networks:
+      - webnet
+    depends_on:
+      - namenode  
+    deploy:
+      replicas: 1
+
+  spark-worker:
+    image: bde2020/spark-worker:3.0.0-hadoop3.2
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER=spark://spark-master:7077
+      - SPARK_WORKER_MEMORY=2G
+      - SPARK_WORKER_CORES=2
+    ports:
+      - "8081:8081"  # Spark Worker Web UI
+    networks:
+      - webnet
+    deploy:
+      replicas: 2  # 2 Spark Workers
+      placement:
+        constraints:
+          - node.role == worker
+
+  historyserver:
+    image: bde2020/hadoop-historyserver:2.0.0-hadoop3.2.1-java8
+    environment:
+      - CORE_CONF_fs_defaultFS=hdfs://namenode:9000
+    ports:
+      - "8188:8188"  # History Server Web UI
+    networks:
+      - webnet
+    deploy:
+      replicas: 1
+
+  jupyter-notebook:
+    container_name: jupyternb
+    image: jupyter/all-spark-notebook:42f4c82a07ff
+    depends_on:
+        - spark-master
+    networks:
+        - webnet
+    user: root
+    ports:
+        - "8888:8888"
+    volumes:
+        - ./data:/home/jovyan/work/data
+    command: bash -c "start-notebook.sh --allow-root --NotebookApp.token=''" 
+    deploy:
+        replicas: 1
+        placement:
+            constraints:
+                - node.role == worker
