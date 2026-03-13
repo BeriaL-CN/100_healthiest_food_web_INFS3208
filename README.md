@@ -56,6 +56,11 @@ INFS3208_Individual_Project/
 ├── data/                     # CSV data files
 │   └── top_100_fruits.csv
 │
+├── local_operation_set/       # Local development files (without Docker)
+│   ├── run_local.sh         # One-click startup script
+│   ├── .env.local           # React local env variables
+│   └── ...
+│
 ├── docker-compose.yml        # Docker orchestration
 └── README.md                 # This file
 ```
@@ -82,25 +87,33 @@ docker-compose up -d
 
 ---
 
-#### Option 2: Running Locally Without Docker
-**不使用Docker本地运行**
+#### Option 2: Running Locally Without Docker (Using local_operation_set)
+**不使用Docker本地运行（使用 local_operation_set）**
+
+项目提供了 `local_operation_set` 文件夹，包含本地运行所需的所有配置文件：
+
+```bash
+# One-click startup
+./local_operation_set/run_local.sh
+```
+
+脚本会自动：
+1. 检查并安装依赖（如需要）
+2. 配置前端 API 指向本地后端
+3. 启动 Django 后端 (端口 8000)
+4. 启动 React 前端 (端口 3000)
+
+**手动运行：**
 
 **Backend (Django):**
 ```bash
 cd backend
 
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
 # Install dependencies
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 
-# Run migrations
-python manage.py migrate
-
-# Start server
-python manage.py runserver
+# Start server with local config
+python3 manage.py runserver 8000 --settings=mysite.settings_local
 ```
 
 **Frontend (React):**
@@ -116,14 +129,16 @@ npm start
 
 The application will be available at `http://localhost:3000`
 
+**详细说明：** 请参阅 `LOCAL_RUN.md`
+
 ---
 
 ### API Endpoints / API接口
 
 | Endpoint | Description |
 |----------|-------------|
-| `/api/fruit/` | Get all food data |
-| `/api/fruit/{id}/` | Get specific food item |
+| `/api/fruit-data/` | Get all food data |
+| `/api/fruit-data/{id}/` | Get specific food item |
 
 ---
 
