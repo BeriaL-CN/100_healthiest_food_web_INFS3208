@@ -18,6 +18,18 @@ build/
 *.log
 local_settings.py
 db.sqlite3
+backend/data/*.sqlite3
+backend/data/*.sqlite3.*
+
+# Data caches and large local downloads
+data/en.openfoodfacts.org.products.csv.gz
+data/openfoodfacts_cleaned_foods.csv
+data/openfoodfacts_cleaned_foods_display_filtered.csv
+data/openfoodfacts_cleaned_foods_local_language.csv
+data/openfoodfacts_taxonomy_enriched_from_display_filtered.csv
+
+# Keep the small current Kaggle + local OFF enrichment snapshot in git.
+!data/top_100_fruits_off_enriched.csv
 
 # Docker
 *.dockerignore
@@ -35,6 +47,9 @@ Thumbs.db
 # Environment
 .env.local
 .env.*.local
+my-app/.env
+backend/.env
 
 # Package lock (use package-lock.json from my-app)
 package-lock.json
+!my-app/package-lock.json

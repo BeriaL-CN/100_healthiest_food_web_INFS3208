@@ -17,8 +17,8 @@ ALLOWED_HOSTS = ['*']
 # 本地开发 DEBUG 模式
 DEBUG = True
 
-# 使用本地 URL 配置
-ROOT_URLCONF = 'mysite.api_urls_local'
+# 使用主 URL 配置，保证本地和 Docker 返回同一种 API 格式
+ROOT_URLCONF = 'mysite.urls'
 
 # 数据库保持 SQLite
 DATABASES = {

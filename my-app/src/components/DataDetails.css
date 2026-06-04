@@ -1,0 +1,198 @@
+.data-details {
+  min-height: calc(100vh - 64px);
+  padding: 24px;
+  background: #f4f6f8;
+  color: #1f2937;
+}
+
+.details-toolbar {
+  width: min(1120px, 100%);
+  margin: 0 auto 20px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 16px;
+}
+
+.details-toolbar h1 {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 38px;
+  border: 1px solid #c7d2df;
+  border-radius: 6px;
+  background: white;
+  color: #1f2937;
+  cursor: pointer;
+  padding: 8px 13px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.back-button:hover,
+.back-button:focus-visible {
+  border-color: #64748b;
+  outline: none;
+}
+  
+.fruit-comparison-container {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 18px;
+  overflow-x: auto;
+  padding: 4px 4px 16px;
+}
+  
+.comparison-info {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 18px;
+  flex: 0 0 auto;
+}
+  
+.fruit-info {
+  width: 360px;
+  flex: 0 0 360px;
+  min-height: 420px;
+  border: 1px solid #d7dee8;
+  border-radius: 8px;
+  background-color: white;
+  padding: 18px;
+  text-align: left;
+  position: relative;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+}
+
+.fruit-info h3 {
+  margin: 0 0 14px;
+  font-size: 21px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.food-fields {
+  margin: 0;
+}
+
+.food-field {
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr);
+  gap: 12px;
+  padding: 8px 0;
+  border-top: 1px solid #edf1f5;
+}
+
+.food-field dt {
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.food-field dd {
+  margin: 0;
+  min-width: 0;
+  color: #111827;
+  font-size: 14px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.fruit-info-wrapper {
+  position: relative;
+  flex: 0 0 auto;
+}
+  
+  .remove-button {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .remove-button:hover {
+    background-color: #c82333; 
+  }
+  
+  .add-button {
+    flex: 0 0 auto;
+    margin-top: 180px;
+    padding: 10px;
+    background-color: #28a745; 
+    color: white;
+    border: none;
+    border-radius: 50%; 
+    cursor: pointer;
+    height: 50px;
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .add-icon {
+    font-size: 24px; 
+  }
+
+.empty-selection {
+  width: min(360px, 86vw);
+  border: 1px dashed #cbd5e1;
+  border-radius: 8px;
+  background: white;
+  padding: 28px;
+  text-align: center;
+}
+
+@media (max-width: 760px) {
+  .data-details {
+    padding: 16px;
+  }
+
+  .details-toolbar {
+    grid-template-columns: 1fr;
+    justify-items: start;
+  }
+
+  .details-toolbar h1 {
+    text-align: left;
+    font-size: 24px;
+  }
+
+  .fruit-comparison-container,
+  .comparison-info {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .fruit-info,
+  .empty-selection {
+    width: min(360px, 86vw);
+    flex-basis: min(360px, 86vw);
+  }
+
+  .add-button {
+    margin-top: 180px;
+  }
+}
+
+@media (max-width: 420px) {
+  .food-field {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}

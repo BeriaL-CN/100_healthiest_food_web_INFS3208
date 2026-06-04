@@ -34,6 +34,22 @@
 
 ## 方式二：手动运行
 
+### 0. 准备本地数据缓存（可选）
+
+如果已经有 `backend/data/foods.sqlite3`，可以跳过同步：
+
+```bash
+cd backend
+python3 scripts/prepare_data.py --skip-if-exists
+```
+
+如果你想同时手动补充 Wikidata 产地缓存：
+
+```bash
+cd backend
+python3 scripts/prepare_data.py --skip-if-exists --with-wikidata
+```
+
 ### 1. 启动后端
 
 ```bash
