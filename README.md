@@ -90,6 +90,42 @@ The app uses `top_100_fruits_off_enriched.csv` when it exists. If it is missing,
 
 ---
 
+### Screenshots / 项目截图
+
+#### Home Map / 首页地图
+
+![Home map showing food origin markers](project_screenshots/01-home-map.png)
+
+The main page displays food origin markers on a Leaflet world map. Each marker opens a popup with the food name, origin region, data source, and a link to the details page.
+
+首页使用 Leaflet 世界地图展示食品原产地 marker。点击 marker 后会显示食品名称、原产地、数据来源，并可进入详情页。
+
+#### Data Methodology / 数据规则说明
+
+![Data methodology modal explaining the food selection rules](project_screenshots/02-data-methodology.png)
+
+The information modal explains how the current dataset is selected, cleaned, enriched, and kept local-first.
+
+信息弹窗说明当前数据集如何筛选、清洗、补齐，并解释为什么采用本地优先的数据流程。
+
+#### Food Details / 食品详情
+
+![Food details page with nutrition fields](project_screenshots/03-food-details.png)
+
+The details page shows the selected food's source, category, origin note, nutrition values, Nutri-Score, and health score.
+
+详情页展示选中食品的数据来源、分类、原产地说明、营养字段、Nutri-Score 和健康分数。
+
+#### Food Comparison / 食品横向对比
+
+![Food comparison page with multiple nutrition cards](project_screenshots/04-food-comparison.png)
+
+The comparison view lets users add foods side by side, making it easier to compare calories, protein, fiber, sugar, fat, Nutri-Score, and health score.
+
+对比视图支持横向添加多个食品卡片，方便比较热量、蛋白质、纤维、糖、脂肪、Nutri-Score 和健康分数。
+
+---
+
 ### Project Structure / 项目结构
 
 ```text
@@ -123,6 +159,12 @@ Individual Project/
 │   ├── top_100_fruits_off_enriched.csv
 │   ├── en.openfoodfacts.org.products.csv.gz
 │   └── region_coordinates.csv
+│
+├── project_screenshots/
+│   ├── 01-home-map.png
+│   ├── 02-data-methodology.png
+│   ├── 03-food-details.png
+│   └── 04-food-comparison.png
 │
 ├── LOCAL_RUN.md
 └── README.md
